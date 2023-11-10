@@ -1,44 +1,48 @@
 <!doctype html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deslizar en un Div (Mobile)</title>
+    <style>
+      #tuDiv {
+        position: relative;
+        background-color: lightgray;
+        overflow: hidden;
+      }
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Deslizar en un Div (Mobile)</title>
-  <style>
-    #tuDiv {
-      position: relative;
-      background-color: lightgray;
-      overflow: hidden;
-    }
+      #seccionOculta {
+        position: fixed;
+        bottom: 0;
+        /* Inicialmente en la parte inferior */
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        text-align: center;
+        z-index: 2;
+        transform: translateY(100%);
+        /* Mueve la sección hacia abajo inicialmente */
+        transition: transform 0.5s ease;
+      }
 
-    #seccionOculta {
-      position: fixed;
-      bottom: 0;
-      /* Inicialmente en la parte inferior */
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      z-index: 2;
-      transform: translateY(100%);
-      /* Mueve la sección hacia abajo inicialmente */
-      transition: transform 0.5s ease;
-    }
+      #contenidoVisible {
+        z-index: 1;
+      }
 
-    #contenidoVisible {
-      z-index: 1;
-    }
+      #seccionOculta.mostrando {
+        transform: translateY(0);
+        /* Muestra la sección moviéndola hacia arriba */
+      }
+    </style>
+  </head>
 
-    #seccionOculta.mostrando {
-      transform: translateY(0);
-      /* Muestra la sección moviéndola hacia arriba */
-    }
-  </style>
-</head>
+  <body>
+    <h1>hola</h1>
 
-<body>
-  <div id="tuDiv" style="
+    <div
+      id="tuDiv"
+      style="
         height: 60px;
         overflow-y: scroll;
         position: absolute;
@@ -46,59 +50,59 @@
         left: 0;
         right: 0;
         z-index: 3;
-      ">
-    <p>Contenido de tu div...</p>
-    <!-- Agrega más contenido según sea necesario -->
-  </div>
+      "
+    >
+      <p>Contenido de tu div...</p>
+      <!-- Agrega más contenido según sea necesario -->
+    </div>
 
-  <div id="seccionOculta">
-    <!-- Contenido de la sección oculta -->
-    <p>Sección oculta...</p>
-  </div>
+    <div id="seccionOculta">
+      <!-- Contenido de la sección oculta -->
+      <p>Sección oculta...</p>
+    </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const container = document.getElementById("tuDiv");
-      const seccionOculta = document.getElementById("seccionOculta");
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("tuDiv");
+        const seccionOculta = document.getElementById("seccionOculta");
 
-      if (container && seccionOculta) {
-        let startY = 0;
-        let sensitivity = 10;
+        if (container && seccionOculta) {
+          let startY = 0;
+          let sensitivity = 10;
 
-        container.addEventListener("touchstart", function (e) {
-          startY = e.touches[0].clientY;
-        });
+          container.addEventListener("touchstart", function (e) {
+            startY = e.touches[0].clientY;
+          });
 
-        container.addEventListener("touchmove", function (e) {
-          const currentY = e.touches[0].clientY;
-          const deltaY = currentY - startY;
+          container.addEventListener("touchmove", function (e) {
+            const currentY = e.touches[0].clientY;
+            const deltaY = currentY - startY;
 
-          if (Math.abs(deltaY) > sensitivity) {
-            if (deltaY < 0) {
-              // Deslizamiento hacia arriba
-              console.log("Deslizamiento hacia arriba");
+            if (Math.abs(deltaY) > sensitivity) {
+              if (deltaY < 0) {
+                // Deslizamiento hacia arriba
+                console.log("Deslizamiento hacia arriba");
 
-              // Muestra la sección oculta con una clase para activar la transición
-              seccionOculta.classList.add("mostrando");
-            } else {
-              // Deslizamiento hacia abajo
-              console.log("Deslizamiento hacia abajo");
+                // Muestra la sección oculta con una clase para activar la transición
+                seccionOculta.classList.add("mostrando");
+              } else {
+                // Deslizamiento hacia abajo
+                console.log("Deslizamiento hacia abajo");
 
-              // Oculta la sección eliminando la clase
-              seccionOculta.classList.remove("mostrando");
+                // Oculta la sección eliminando la clase
+                seccionOculta.classList.remove("mostrando");
+              }
+
+              // Restablecer la posición inicial para evitar detecciones continuas
+              startY = currentY;
             }
-
-            // Restablecer la posición inicial para evitar detecciones continuas
-            startY = currentY;
-          }
-        });
-      } else {
-        console.error(
-          "Elemento con ID 'tuDiv' o 'seccionOculta' no encontrado.",
-        );
-      }
-    });
-  </script>
-</body>
-
+          });
+        } else {
+          console.error(
+            "Elemento con ID 'tuDiv' o 'seccionOculta' no encontrado.",
+          );
+        }
+      });
+    </script>
+  </body>
 </html>
